@@ -1,0 +1,3 @@
+firstline
+secondline
+add 0,0,1
