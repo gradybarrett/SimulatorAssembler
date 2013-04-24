@@ -11,7 +11,6 @@ class Simulator(object):
     """
     Initialize the Simulator and specify verbosity
     """
-
     self.instruction_mem = imem
     self.data_mem = dmem
 

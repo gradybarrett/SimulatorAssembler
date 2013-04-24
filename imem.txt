@@ -1,3 +1,7 @@
 firstline
 secondline
-add 0,0,1
+add a, 0, 1
+seti c, 6
+addptr b, a, 3
+seti b, 45
+add a, -1
