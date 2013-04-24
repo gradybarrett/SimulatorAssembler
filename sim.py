@@ -21,9 +21,20 @@ class Simulator(object):
     self.reg_d = 0
     self.reg_pc = 0
 
-  def start(self)
+  def run(self)
     """
     Should execute all cycles until end of Imem
+    """
+
+  def step(self, numInstructions=1)
+    """
+    Given an integer representing the number of steps to be taken,
+    step forward in the code
+    """
+
+  def read_values(self)
+    """
+    Outputs register values
     """
 
   def read_instr(self)
