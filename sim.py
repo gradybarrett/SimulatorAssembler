@@ -11,7 +11,6 @@ class Simulator(object):
     """
     Initialize the Simulator and specify verbosity
     """
-
     self.instruction_mem = imem
     self.data_mem = dmem
 
@@ -21,23 +20,23 @@ class Simulator(object):
     self.reg_d = 0
     self.reg_pc = 0
 
-  def run(self)
+  def run(self):
     """
     Should execute all cycles until end of Imem
     """
 
-  def step(self, numInstructions=1)
+  def step(self, numInstructions=1):
     """
     Given an integer representing the number of steps to be taken,
     step forward in the code
     """
 
-  def read_values(self)
+  def read_values(self):
     """
     Outputs register values
     """
 
-  def read_instr(self)
+  def read_instr(self):
     """
     Look at location in imem and determine what we need to do
     Lots of cases (control)

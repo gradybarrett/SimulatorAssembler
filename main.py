@@ -6,5 +6,5 @@ from sim import Simulator
 
 imem = Instr_Mem("imem.txt")
 dmem = Data_Mem("dmem.txt")
-prog1 = Simulator(imem, dmem)
+prog1 = Simulator(imem.output_array(), dmem.output_array())
 
