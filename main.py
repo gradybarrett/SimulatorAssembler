@@ -16,7 +16,5 @@ print "Simulation for Small16 Processor has begun.\n" + \
   "sim.run()              Steps program until finished.\n" + \
   "sim.restart(N)         Restarts the program and steps N instructions.\n" + \
   "sim.output_reg()       Outputs register values.\n" + \
-  "sim.output_dmem()      Outputs all data memory.\n" + \
-  "sim.output_dmem(M)     Outputs data memory at index M.\n" + \
   "sim.output_dmem(M, N)  Outputs data memory starting at index M with range N.\n" + \
-  "sim.output_imem()"
+  "sim.output_imem(M, N)  Outputs instruction memory starting at index M with range N.\n"

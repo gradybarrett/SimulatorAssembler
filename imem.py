@@ -15,12 +15,15 @@ class Instr_Mem(object):
 
   def parse(self):
     for line in fileinput.input(self.fn):
-      result =  re.match(r'([a-z]*) ([abcd]), (([abcd]), ([0-9])|([0-9]*))', line)
-      if result:
-        if result.group(6):
-          self.instruction_memory.append([result.group(1),result.group(2),int(result.group(6))])
-        if result.group(4):
-          self.instruction_memory.append([result.group(1),result.group(2),result.group(4),int(result.group(5))])
+      jtype = re.match(r'([a-z]+) ([0-9]+)', line)
+      btype = re.match(r'([a-z]+) ([abcd]), ([0-9]+)', line)
+      ptype = re.match(r'([a-z]+) ([abcd]), ([abcd]), ([0-9]+)', line)
+      if jtype:
+        self.instruction_memory.append(jtype.groups())
+      elif btype:
+        self.instruction_memory.append(btype.groups())
+      elif ptype:
+        self.instruction_memory.append(ptype.groups())
 
   def output_array(self):
     return self.instruction_memory
