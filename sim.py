@@ -13,7 +13,11 @@ class Simulator(object):
     """
     self.instruction_mem = imem
     self.data_mem = dmem
-
+    self.running = True
+    self.instr_counts = {"add":0, "sub":0, "load":0, "store":0, 
+      "addi":0, "seti":0, "jump":0, "jz":0, "addptr":0, "subptr":0,
+      "loadptr":0, "storeptr":0}
+      
     self.reg_a = 0
     self.reg_b = 0
     self.reg_c = 0
@@ -24,6 +28,9 @@ class Simulator(object):
     """
     Should execute all cycles until end of Imem
     """
+    for instr in self.instruction_mem:
+      print instr
+      self.read_instr(instr)
 
   def step(self, numInstructions=1):
     """
@@ -52,27 +59,42 @@ class Simulator(object):
       self.reg_pc += 1
       if instr[0] == "add":
         setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + self.data_mem[instr[2]])
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "sub":
         setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) - self.data_mem[instr[2]])
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "load":
         setattr(self, 'reg_'+instr[1], self.data_mem[instr[2]])
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "store":
         setattr(self, data_mem[instr[2]], getattr(self, 'reg_'+instr[1]))
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "addi":
         setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + instr[2])
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "seti":
         setattr(self, 'reg_'+instr[1], instr[2])
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "jump":
-        self.reg_pc = instr[1]
+        if self.reg_pc != instr[1]:
+          self.reg_pc = instr[1]
+        else:
+          self.running = False
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "jz":
         if getattr(self, 'reg_'+instr[1]) is None:
           self.reg_pc = instr[2]
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "addptr":
         setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]])
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "subptr":
         setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) - self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]])
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "loadptr":
-        setattr(self, 'reg_'+instr[1], self.data_mem[getattr(self, 'reg_'+instr[2])] + instr[3])
+        setattr(self, 'reg_'+instr[1], self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]])
+        self.instr_counts[instr[0]] += 1
       elif instr[0] == "storeptr":
         #TODO wasnt sure on this
-        dmem[vars()["reg_"+instr[2]]+ instr[3]] = vars()["reg_"+instr[1]]
+        self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]] = getattr(self, 'reg_'+instr[1])
+        self.instr_counts[instr[0]] += 1
