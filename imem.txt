@@ -4,9 +4,12 @@ addptr c, a, 0
 addptr d, a, 2
 seti a, 0
 sub b, 1
+seti a, 3
+seti b, 4
+subptr b, a, 0
 jz a, 8
 jump 1
 seti a, 0
+loadptr b, a, 0
 addi a, 10
-seti b, 0
 storeptr a, b, 0 
