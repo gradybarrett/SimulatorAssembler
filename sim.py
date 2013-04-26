@@ -11,7 +11,10 @@ class Simulator(object):
     """
     Initialize the Simulator and specify verbosity
     """
+    self.orig_imem = imem
     self.instruction_mem = imem
+
+    self.orig_dmem = dmem
     self.data_mem = dmem
 
     self.reg_a = 0
@@ -33,7 +36,14 @@ class Simulator(object):
     print self.instruction_mem[self.reg_pc]
     self.read_instr(self.instruction_mem[self.reg_pc])
 
-  def read_values(self):
+  def restart(self, numInstruction=0):
+    """
+    Restarts the simulation and steps defined number of Instructions
+    """
+    self.instruction_mem = self.orig_imem
+    self.data_mem = self.orig_dmem
+
+  def output_reg(self):
     """
     Outputs register values
     """
@@ -42,6 +52,36 @@ class Simulator(object):
     print "c: " + str(self.reg_c)
     print "d: " + str(self.reg_d)
     print "pc: " + str(self.reg_pc)
+
+  def output_dmem(self, index=None, mem_range=1):
+    """
+    Outputs data memory given starting index and mem_range
+    """
+    if index is None:
+      index = 0
+      mem_range = len(self.data_mem)
+
+    while(mem_range > 0 and index < len(self.data_mem)):
+      print str(self.data_mem[index]) 
+      mem_range -= 1
+      index += 1
+
+  def output_imem(self, index=None, mem_range=1):
+    """
+    Outputs instruction memory given starting index and mem_range
+    """
+    if index is None:
+      index = 0
+      mem_range = len(self.data_mem)
+
+    while(mem_range > 0 and index < len(self.instruction_mem)):
+      i_string = str(self.instruction_mem[index][0]) + " " + str(self.instruction_mem[index][1])
+      for i in range (2, 4, 1):
+        if i < len(self.instruction_mem[index]):
+          i_string += ", " + str(self.instruction_mem[index][i])
+      print i_string
+      mem_range -= 1
+      index += 1
 
   def read_instr(self, instr):
     """
