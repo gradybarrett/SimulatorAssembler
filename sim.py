@@ -12,10 +12,15 @@ class Simulator(object):
     Initialize the Simulator and specify verbosity
     """
     self.orig_imem = imem
-    self.instruction_mem = imem
-
     self.orig_dmem = dmem
-    self.data_mem = dmem
+    self.reset()
+
+  def reset(self):
+    """
+    Reset all values as if starting from the beginning.
+    """
+    self.instruction_mem = self.orig_imem
+    self.data_mem = self.orig_dmem
     
     self.running = True
     self.instr_counts = {"add":0, "sub":0, "load":0, "store":0, 
@@ -46,10 +51,10 @@ class Simulator(object):
 
   def restart(self, numInstruction=0):
     """
-    Restarts the simulation and steps defined number of Instructions
+    Resets the simulation and steps defined number of Instructions
     """
-    self.instruction_mem = self.orig_imem
-    self.data_mem = self.orig_dmem
+    self.reset()
+    self.step(numInstructions)
 
   def output_reg(self):
     """
@@ -80,7 +85,7 @@ class Simulator(object):
     """
     if index is None:
       index = 0
-      mem_range = len(self.data_mem)
+      mem_range = len(self.instruction_mem)
 
     while(mem_range > 0 and index < len(self.instruction_mem)):
       i_string = str(self.instruction_mem[index][0]) + " " + str(self.instruction_mem[index][1])
@@ -136,6 +141,5 @@ class Simulator(object):
         setattr(self, 'reg_'+instr[1], self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "storeptr":
-        #TODO wasnt sure on this
         self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]] = getattr(self, 'reg_'+instr[1])
         self.instr_counts[instr[0]] += 1
