@@ -14,7 +14,7 @@ class Data_Mem(object):
     for line in fileinput.input(self.fn):
       result = re.match(r'([0-9]*)', line)
       if result:
-        self.data_memory.append(result.group(1))
+        self.data_memory.append(int(result.group(1)))
 
   def output_array(self):
     return self.data_memory
