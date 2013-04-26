@@ -6,4 +6,17 @@ from sim import Simulator
 
 imem = Instr_Mem("imem.txt")
 dmem = Data_Mem("dmem.txt")
-prog1 = Simulator(imem.output_array(), dmem.output_array())
+sim = Simulator(imem.output_array(), dmem.output_array())
+
+print "Simulation for Small16 Processor has begun.\n" + \
+  "Data memory is set in dmem.txt\n" + \
+  "Instruction memory is set in imem.txt\n" + \
+  "\nInstructions to use Simulator object:\n" + \
+  "sim.step(N)            Steps program N instructions, default is 1.\n" + \
+  "sim.run()              Steps program until finished.\n" + \
+  "sim.restart(N)         Restarts the program and steps N instructions.\n" + \
+  "sim.output_reg()       Outputs register values.\n" + \
+  "sim.output_dmem()      Outputs all data memory.\n" + \
+  "sim.output_dmem(M)     Outputs data memory at index M.\n" + \
+  "sim.output_dmem(M, N)  Outputs data memory starting at index M with range N.\n" + \
+  "sim.output_imem()"
