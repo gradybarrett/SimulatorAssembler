@@ -16,6 +16,7 @@ class Simulator(object):
 
     self.orig_dmem = dmem
     self.data_mem = dmem
+    
     self.running = True
     self.instr_counts = {"add":0, "sub":0, "load":0, "store":0, 
       "addi":0, "seti":0, "jump":0, "jz":0, "addptr":0, "subptr":0,
