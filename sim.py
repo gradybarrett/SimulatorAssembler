@@ -95,6 +95,10 @@ class Simulator(object):
       print i_string
       mem_range -= 1
       index += 1
+  
+  def output_instr_cnt(self):
+    for key, value in dict.items(self.instr_counts):
+      print key.ljust(10), ":", value
 
   def read_instr(self, instr):
     """

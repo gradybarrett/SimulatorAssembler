@@ -17,4 +17,5 @@ print "Simulation for Small16 Processor has begun.\n" + \
   "sim.restart(N)         Restarts the program and steps N instructions.\n" + \
   "sim.output_reg()       Outputs register values.\n" + \
   "sim.output_dmem(M, N)  Outputs data memory starting at index M with range N.\n" + \
-  "sim.output_imem(M, N)  Outputs instruction memory starting at index M with range N.\n"
+  "sim.output_imem(M, N)  Outputs instruction memory starting at index M with range N.\n" + \
+  "sim.output_instr_cnt()  Outputs the number of times each instruction has been executed."
