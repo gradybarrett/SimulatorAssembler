@@ -108,10 +108,10 @@ class Simulator(object):
     if instr:
       self.reg_pc += 1
       if instr[0] == "add":
-        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + self.data_mem[instr[2]])
+        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + self.data_mem[int(instr[2])])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "sub":
-        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) - self.data_mem[instr[2]])
+        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) - self.data_mem[int(instr[2])])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "load":
         setattr(self, 'reg_'+instr[1], self.data_mem[instr[2]])
@@ -120,30 +120,30 @@ class Simulator(object):
         setattr(self, data_mem[instr[2]], getattr(self, 'reg_'+instr[1]))
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "addi":
-        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + instr[2])
+        setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) + int(instr[2]))
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "seti":
         setattr(self, 'reg_'+instr[1], instr[2])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "jump":
         if self.reg_pc != instr[1]:
-          self.reg_pc = instr[1]
+          self.reg_pc = int(instr[1])
         else:
           self.running = False
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "jz":
         if getattr(self, 'reg_'+instr[1]) is None:
-          self.reg_pc = instr[2]
+          self.reg_pc = int(instr[2])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "addptr":
-        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]])
+        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + self.data_mem[getattr(self, 'reg_'+instr[2]) + int(instr[3])])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "subptr":
-        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) - self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]])
+        setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) - int(self.data_mem[int(getattr(self, 'reg_'+instr[2])) + int(instr[3])]))
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "loadptr":
-        setattr(self, 'reg_'+instr[1], self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]])
+        setattr(self, 'reg_'+instr[1], int(self.data_mem[int(getattr(self, 'reg_'+instr[2])) + int(instr[3])]))
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "storeptr":
-        self.data_mem[getattr(self, 'reg_'+instr[2]) + instr[3]] = getattr(self, 'reg_'+instr[1])
+        self.data_mem[int(getattr(self, 'reg_'+instr[2])) + int(instr[3])] = getattr(self, 'reg_'+instr[1])
         self.instr_counts[instr[0]] += 1
