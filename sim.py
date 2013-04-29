@@ -114,14 +114,20 @@ class Simulator(object):
     if instr:
       self.reg_pc += 1
       if instr[0] == "add":
-        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + self.data_mem[int(instr[2])])
-        self.instr_counts[instr[0]] += 1
+        index = int(instr[2])
+        if index >= 0 and index < len(self.data_mem):
+          setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) + int(self.data_mem[index]))
+          self.instr_counts[instr[0]] += 1
       elif instr[0] == "sub":
-        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) - self.data_mem[int(instr[2])])
-        self.instr_counts[instr[0]] += 1
+        index = int(instr[2])
+        if index >= 0 and index < len(self.data_mem):
+          setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) - int(self.data_mem[index]))
+          self.instr_counts[instr[0]] += 1
       elif instr[0] == "load":
-        setattr(self, 'reg_'+instr[1], self.data_mem[instr[2]])
-        self.instr_counts[instr[0]] += 1
+        index = int(instr[2])
+        if index >= 0 and index < len(self.data_mem):
+          setattr(self, 'reg_'+instr[1], int(self.data_mem[index]))
+          self.instr_counts[instr[0]] += 1
       elif instr[0] == "store":
         if int(instr[2]) > 0 and int(instr[2]) < len(self.data_mem):
           self.data_mem[int(instr[2])] = getattr(self, 'reg_'+instr[1])
@@ -130,36 +136,36 @@ class Simulator(object):
         setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) + int(instr[2]))
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "seti":
-        setattr(self, 'reg_'+instr[1], instr[2])
+        setattr(self, 'reg_'+instr[1], int(instr[2]))
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "jump":
-        if self.reg_pc != instr[1]:
+        if (self.reg_pc - 1) != (int(instr[1])):
           self.reg_pc = int(instr[1])
         else:
           self.running = False
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "jz":
-        if getattr(self, 'reg_'+instr[1]) is None:
+        if getattr(self, 'reg_'+instr[1]) is 0:
           self.reg_pc = int(instr[2])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "addptr":
         index = int(getattr(self, 'reg_'+instr[2])) + int(instr[3])
-        if index > 0 and index < len(self.data_mem):
+        if index >= 0 and index < len(self.data_mem):
           setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) + int(self.data_mem[index]))
           self.instr_counts[instr[0]] += 1
       elif instr[0] == "subptr":
         index = int(getattr(self, 'reg_'+instr[2])) + int(instr[3])
-        if index > 0 and index < len(self.data_mem):
+        if index >= 0 and index < len(self.data_mem):
           setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) - int(self.data_mem[index]))
           self.instr_counts[instr[0]] += 1
       elif instr[0] == "loadptr":
         index = int(getattr(self, 'reg_'+instr[2])) + int(instr[3])
-        if index > 0 and index < len(self.data_mem):
+        if index >= 0 and index < len(self.data_mem):
           setattr(self, 'reg_'+instr[1], int(self.data_mem[index]))
           self.instr_counts[instr[0]] += 1
       elif instr[0] == "storeptr":
         index = int(getattr(self, 'reg_'+instr[2])) + int(instr[3])
-        if index > 0 and index < len(self.data_mem):
+        if index >= 0 and index < len(self.data_mem):
           self.data_mem[index] = getattr(self, 'reg_'+instr[1])
           self.instr_counts[instr[0]] += 1
       if self.running and self.reg_pc >= len(self.instruction_mem):
