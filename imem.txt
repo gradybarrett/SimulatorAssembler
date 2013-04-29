@@ -1,15 +1,16 @@
-addi a, 1
-add b, 1
-addptr c, a, 0
-addptr d, a, 2
-seti a, 0
-sub b, 1
-seti a, 3
-seti b, 4
-subptr b, a, 0
-jz a, 8
-jump 1
-seti a, 0
-loadptr b, a, 0
-addi a, 10
-storeptr a, b, 0 
+store a, 9
+store b, 10
+seti c, 9
+seti d, 10
+addptr a, c, 0
+addptr a, d, 0
+addptr a, c, 1
+storeptr a, c, 0
+storeptr a, d, 0
+storeptr a, c, 1
+subptr a, c, 0
+subptr a, d, 0
+subptr a, c, 1
+loadptr a, c, 0
+loadptr a, d, 0
+loadptr a, c, 1

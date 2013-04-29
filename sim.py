@@ -22,7 +22,6 @@ class Simulator(object):
     self.instruction_mem = self.orig_imem
     self.data_mem = self.orig_dmem
     
-    self.running = True
     self.instr_counts = {"add":0, "sub":0, "load":0, "store":0, 
       "addi":0, "seti":0, "jump":0, "jz":0, "addptr":0, "subptr":0,
       "loadptr":0, "storeptr":0}
@@ -33,23 +32,30 @@ class Simulator(object):
     self.reg_d = 0
     self.reg_pc = 0
 
+    if self.reg_pc < len(self.instruction_mem):
+      self.running = True
+    else:
+      self.running = False
+
   def run(self):
     """
     Should execute all cycles until end of Imem
     """
-    for instr in self.instruction_mem:
-      print instr
-      self.read_instr(instr)
+    while self.running:
+      print self.instruction_mem[self.reg_pc]
+      self.read_instr(self.instruction_mem[self.reg_pc])
 
   def step(self, numInstructions=1):
     """
     Given an integer representing the number of steps to be taken,
     step forward in the code
     """
-    print self.instruction_mem[self.reg_pc]
-    self.read_instr(self.instruction_mem[self.reg_pc])
+    while numInstructions > 0 and self.running:
+      print self.instruction_mem[self.reg_pc]
+      self.read_instr(self.instruction_mem[self.reg_pc])
+      numInstructions -= 1
 
-  def restart(self, numInstruction=0):
+  def restart(self, numInstructions=0):
     """
     Resets the simulation and steps defined number of Instructions
     """
@@ -117,8 +123,9 @@ class Simulator(object):
         setattr(self, 'reg_'+instr[1], self.data_mem[instr[2]])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "store":
-        setattr(self, data_mem[instr[2]], getattr(self, 'reg_'+instr[1]))
-        self.instr_counts[instr[0]] += 1
+        if int(instr[2]) > 0 and int(instr[2]) < len(self.data_mem):
+          self.data_mem[int(instr[2])] = getattr(self, 'reg_'+instr[1])
+          self.instr_counts[instr[0]] += 1
       elif instr[0] == "addi":
         setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) + int(instr[2]))
         self.instr_counts[instr[0]] += 1
@@ -136,14 +143,25 @@ class Simulator(object):
           self.reg_pc = int(instr[2])
         self.instr_counts[instr[0]] += 1
       elif instr[0] == "addptr":
-        setattr(self, 'reg_'+instr[1], getattr(self, 'reg_'+instr[1]) + self.data_mem[getattr(self, 'reg_'+instr[2]) + int(instr[3])])
-        self.instr_counts[instr[0]] += 1
+        index = int(getattr(self, 'reg_'+instr[2])) + int(instr[3])
+        if index > 0 and index < len(self.data_mem):
+          setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) + int(self.data_mem[index]))
+          self.instr_counts[instr[0]] += 1
       elif instr[0] == "subptr":
-        setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) - int(self.data_mem[int(getattr(self, 'reg_'+instr[2])) + int(instr[3])]))
-        self.instr_counts[instr[0]] += 1
+        index = int(getattr(self, 'reg_'+instr[2])) + int(instr[3])
+        if index > 0 and index < len(self.data_mem):
+          setattr(self, 'reg_'+instr[1], int(getattr(self, 'reg_'+instr[1])) - int(self.data_mem[index]))
+          self.instr_counts[instr[0]] += 1
       elif instr[0] == "loadptr":
-        setattr(self, 'reg_'+instr[1], int(self.data_mem[int(getattr(self, 'reg_'+instr[2])) + int(instr[3])]))
-        self.instr_counts[instr[0]] += 1
+        index = int(getattr(self, 'reg_'+instr[2])) + int(instr[3])
+        if index > 0 and index < len(self.data_mem):
+          setattr(self, 'reg_'+instr[1], int(self.data_mem[index]))
+          self.instr_counts[instr[0]] += 1
       elif instr[0] == "storeptr":
-        self.data_mem[int(getattr(self, 'reg_'+instr[2])) + int(instr[3])] = getattr(self, 'reg_'+instr[1])
-        self.instr_counts[instr[0]] += 1
+        index = int(getattr(self, 'reg_'+instr[2])) + int(instr[3])
+        if index > 0 and index < len(self.data_mem):
+          self.data_mem[index] = getattr(self, 'reg_'+instr[1])
+          self.instr_counts[instr[0]] += 1
+      if self.running and self.reg_pc >= len(self.instruction_mem):
+        self.running = False
+
