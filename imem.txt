@@ -1,15 +1,48 @@
-addi a, 1
-add b, 1
-addptr c, a, 0
-addptr d, a, 2
-seti a, 0
-sub b, 1
 seti a, 3
-seti b, 4
-subptr b, a, 0
-jz a, 8
+jz a, 5
+sub a, 2
+addi a, 1
 jump 1
+store a, -1
+store a, 0
+store a, 9
+store b, 10
 seti a, 0
-loadptr b, a, 0
-addi a, 10
-storeptr a, b, 0 
+seti b, 0
+sub b, 1
+seti c, 9
+seti d, 10
+addptr a, a, 0
+addptr a, b, 0
+addptr a, c, 0
+addptr a, d, 0
+addptr a, c, 1
+storeptr a, a, 0
+storeptr a, b, 0
+storeptr a, c, 0
+storeptr a, d, 0
+storeptr a, c, 1
+subptr a, a, 0
+subptr a, b, 0
+subptr a, c, 0
+subptr a, d, 0
+subptr a, c, 1
+loadptr a, a, 0
+loadptr a, b, 0
+loadptr a, c, 0
+loadptr a, d, 0
+loadptr a, c, 1
+load a, 0
+load b, 5
+load c, 9
+load d, 10
+add a, -1
+add a, 0
+add b, 9
+add b, 10
+sub a, 0
+sub b, 9
+sub b, 10
+jump 43
+seti c, 99
+seti d, 99
